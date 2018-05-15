@@ -55,5 +55,24 @@ object Conjunto {
   def apply(f: Int => Boolean): Conjunto = {
     new Conjunto(f)
   }
-..............................................
+
+  def conjuntoUnElemento(elemento : Int) : Conjunto = {
+    new Conjunto((x:Int) => x == elemento)
+  }
+
+  def union(c1 : Conjunto, c2 : Conjunto) : Conjunto = {
+    new Conjunto((x:Int) => c1.apply(x) || c2.apply(x))
+  }
+
+  def interseccion(c1 : Conjunto, c2 : Conjunto) : Conjunto = {
+    new Conjunto((x:Int) => c1.apply(x) && c2.apply(x))
+  }
+
+  def diferencia(c1 : Conjunto, c2 : Conjunto) : Conjunto = {
+    new Conjunto((x:Int) => c1.apply(x) && !c2.apply(x))
+  }
+
+  def filtrar(c : Conjunto, predicado : Int => Boolean) : Conjunto = {
+    new Conjunto((x:Int) => c.apply(x) && predicado(x))
+  }
 }
