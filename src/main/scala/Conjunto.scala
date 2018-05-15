@@ -75,4 +75,25 @@ object Conjunto {
   def filtrar(c : Conjunto, predicado : Int => Boolean) : Conjunto = {
     new Conjunto((x:Int) => c.apply(x) && predicado(x))
   }
+
+  def paraTodo(c : Conjunto, predicado: Int => Boolean) : Boolean = {
+    def iterar (elemento:Int) : Boolean = {
+      if(elemento == LIMITE+1) true
+      else if (!c.apply(elemento)) iterar(elemento+1)
+      else{
+        predicado(elemento) && iterar(elemento+1)
+      }
+
+    }
+
+    iterar(-LIMITE)
+  }
+
+  def existe(c : Conjunto, predicado : Int => Boolean) : Boolean = {
+    !paraTodo(c, !predicado(_))
+  }
+
+  def map(c : Conjunto, funcion : Int => Int) : Conjunto = {
+    new Conjunto((x:Int) => existe(c, valor => x == funcion(valor)))
+  }
 }
