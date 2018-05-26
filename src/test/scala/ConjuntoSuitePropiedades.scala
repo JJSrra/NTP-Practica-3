@@ -79,4 +79,48 @@ object ConjuntoSuitePropiedades extends Properties("Test sobre conjunto") {
         global == true
       }
     }
+
+  property("Conjunto diferencia") =
+    forAll(valor) {
+      valor => {
+        val secuencia1 = secuencia(10)
+        val secuencia2 = secuencia(10)
+
+        val conjunto1 = Conjunto(x => x >= secuencia1.min && x <= secuencia1.max)
+        val conjunto2 = Conjunto(x => x >= secuencia2.min && x <= secuencia2.max)
+
+        val diferencia = Conjunto.diferencia(conjunto1, conjunto2)
+
+        val rangoDiferencia = secuencia1.toList.filterNot(secuencia2.toList.contains(_))
+
+        val resultado = rangoDiferencia.map(valor => {
+          diferencia(valor) == true
+        })
+
+        val global: Boolean = resultado.forall(res => res == true)
+        global == true
+      }
+    }
+
+  property("Conjunto filter") =
+    forAll(valor) {
+      valor => {
+        val secuencia1 = secuencia(10)
+        val secuencia2 = secuencia(10)
+
+        val conjunto1 = Conjunto(x => x >= secuencia1.min && x <= secuencia1.max)
+        val conjunto2 = Conjunto(x => x >= secuencia2.min && x <= secuencia2.max)
+
+        val filter = Conjunto.filtrar(conjunto1, conjunto2.funcionCaracteristica)
+
+        val rangoFilter = secuencia1.toList.intersect(secuencia2.toList)
+
+        val resultado = rangoFilter.map(valor => {
+          filter(valor) == true
+        })
+
+        val global: Boolean = resultado.forall(res => res == true)
+        global == true
+      }
+    }
 }
