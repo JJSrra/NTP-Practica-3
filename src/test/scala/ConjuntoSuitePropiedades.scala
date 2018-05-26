@@ -1,6 +1,6 @@
 
 import org.scalacheck.Properties
-import org.scalacheck.Prop.{forAll, throws, AnyOperators}
+import org.scalacheck.Prop.{forAll, throws, AnyOperators, all}
 import org.scalacheck.Gen._
 
 object ConjuntoSuitePropiedades extends Properties("Test sobre conjunto") {
@@ -121,6 +121,47 @@ object ConjuntoSuitePropiedades extends Properties("Test sobre conjunto") {
 
         val global: Boolean = resultado.forall(res => res == true)
         global == true
+      }
+    }
+
+  property("Conjunto para todo") =
+    forAll(valor) {
+      valor => {
+
+        val conjunto = Conjunto(x => x <= 10)
+
+        val condicion1 = Conjunto.paraTodo(conjunto,x=> x <= 10)
+        val condicion2 = !Conjunto.paraTodo(conjunto,x => x >= 5)
+
+        all(condicion1,condicion2)
+      }
+    }
+
+  property("Conjunto existe") =
+    forAll(valor) {
+      valor => {
+
+        val conjunto = Conjunto(x => x <= 10)
+
+        val condicion1 = Conjunto.paraTodo(conjunto,x=> x <= 10)
+        val condicion2 = !Conjunto.paraTodo(conjunto,x => x >= 2)
+
+        all(condicion1,condicion2)
+      }
+    }
+
+  property("Conjunto map") =
+    forAll(valor) {
+      valor => {
+
+        val conjunto = Conjunto(x => x <= 10)
+        val conjuntoMap = Conjunto.map(conjunto, x => x+25)
+
+        val condicion1 = conjuntoMap(30)
+        val condicion2 = conjuntoMap(31)
+        val condicion3 = conjuntoMap(150)
+
+        all(condicion1 && condicion2 && !condicion3)
       }
     }
 }
